@@ -1,15 +1,13 @@
-package com.rocketmq.two.bean;
-
+package com.rocketmq.myrocketmq.listener;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.context.ApplicationEvent;
-
-import java.io.UnsupportedEncodingException;
 import java.util.List;
+
+
 /**
- * 监听对象
- * @author 18011618
- *
+ * @author zhaishuaiqing
+ * @date 2020/10/27 10:06
  */
 public class MessageEvent extends ApplicationEvent {
     private static final long serialVersionUID = -4468405250074063206L;
@@ -21,8 +19,6 @@ public class MessageEvent extends ApplicationEvent {
         this.consumer = consumer;
         this.setMsgs(msgs);
     }
-
-
 
     public DefaultMQPushConsumer getConsumer() {
         return consumer;

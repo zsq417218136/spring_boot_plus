@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author zhaishuaiqing
+ * @author zhaishuaiqing@Slf4j
+ * @RestController
  * @date 2020/9/23 17:15
  */
-@Slf4j
-@RestController
+
 public class Controller {
 
     @Autowired
@@ -46,7 +46,7 @@ public class Controller {
             Message message = new Message(JmsConfig.TOPIC, "testtag", ("小小一家人的称谓:" + s).getBytes());
             //发送
             SendResult sendResult = producer.getProducer().send(message);
-            log.info("输出生产者信息={}",sendResult);
+            //log.info("输出生产者信息={}",sendResult);
         }
         return "成功";
     }

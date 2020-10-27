@@ -1,58 +1,49 @@
-package com.rocketmq.two.producer;
+package com.rocketmq.myrocketmq.controller;
 
 
-import com.rocketmq.two.bean.User;
-import io.geekidea.springbootplus.framework.log.annotation.Module;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.rocketmq.myrocketmq.pojo.User;
 import org.apache.rocketmq.client.producer.*;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.alibaba.fastjson.JSON;
-
-
-
 import java.util.List;
 
-@RestController
-@Module("rocketmq")
-@RequestMapping("/rocketmq")
-@Api(value = "ProducerAPI", tags = {"ProducerAPI"})
-public class ProducerController {
 
+
+/**
+ * @author zhaishuaiqing
+ * @date 2020/10/27 10:18
+ */
+@RestController
+public class ProducerController {
+    @Autowired
     private DefaultMQProducer defaultProducer;
 
-
+    @Autowired
     private TransactionMQProducer transactionProducer;
-
 
     /**
      * 发送普通消息
      */
     @GetMapping("/sendMessage")
-    @ApiOperation(value = "发送普通消息")
     public void sendMsg() {
 
         for(int i=0;i<100;i++){
             User user = new User();
             user.setId(String.valueOf(i));
-            user.setUsername("jhp"+i);
+            user.setUserName("jhp"+i);
             String json = JSON.toJSONString(user);
             Message msg = new Message("user-topic","white",json.getBytes());
             try {
-                SendResult result = defaultProducer.send(msg);
-                System.out.println("消息id:"+result.getMsgId()+":"+","+"发送状态:"+result.getSendStatus());
+                SendResult sendResult = defaultProducer.send(msg);
+                System.out.println("消息id:"+sendResult.getMsgId()+":"+","+"发送状态:"+sendResult.getSendStatus());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-
     }
 
     /**
@@ -60,7 +51,6 @@ public class ProducerController {
      * @return
      */
     @GetMapping("/sendTransactionMess")
-    @ApiOperation(value = "发送事务消息")
     public String sendTransactionMsg() {
         SendResult sendResult = null;
         try {
@@ -93,24 +83,23 @@ public class ProducerController {
      * 支持顺序发送消息
      */
     @GetMapping("/sendMessOrder")
-    @ApiOperation(value = "支持顺序发送消息")
     public void sendMsgOrder() {
         for(int i=0;i<100;i++) {
             User user = new User();
             user.setId(String.valueOf(i));
-            user.setUsername("jhp" + i);
+            user.setUserName("jhp" + i);
             String json = JSON.toJSONString(user);
             Message msg = new Message("user-topic", "white", json.getBytes());
             try{
-                defaultProducer.send(msg, new MessageQueueSelector() {
+                SendResult sendResult = defaultProducer.send(msg, new MessageQueueSelector() {
                     @Override
                     public MessageQueue select(List<MessageQueue> mqs, Message msg, Object arg) {
                         int index = ((Integer) arg) % mqs.size();
                         return mqs.get(index);
                     }
                 },i);
-            }
-            catch (Exception e){
+                System.out.println("消息id:"+sendResult.getMsgId()+":"+","+"发送状态:"+sendResult.getSendStatus());
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }

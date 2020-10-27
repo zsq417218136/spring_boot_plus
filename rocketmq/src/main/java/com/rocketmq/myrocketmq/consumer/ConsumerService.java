@@ -1,15 +1,16 @@
-package com.rocketmq.two.consumer;
+package com.rocketmq.myrocketmq.consumer;
 
 import java.util.List;
 
-
-import com.rocketmq.two.bean.MessageEvent;
+import com.rocketmq.myrocketmq.listener.MessageEvent;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+
 /**
- * 监听消息进行消费
+ * @author zhaishuaiqing
+ * @date 2020/10/27 10:16
  */
 @Component
 public class ConsumerService {
@@ -25,3 +26,4 @@ public class ConsumerService {
         }
     }
 }
+

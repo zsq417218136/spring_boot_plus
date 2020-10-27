@@ -1,29 +1,22 @@
-package com.rocketmq.two.config;
+package com.rocketmq.myrocketmq.config;
 
-/**
- * @author zhaishuaiqing
- * @date 2020/10/22 11:48
- */
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-
-
-/*@PropertySource("classpath:config/rocketmq.properties")
-@ConfigurationProperties(prefix = "suning.rocketmq")
-@Configuration
-@Setter
-@Getter
-@ToString
-@Accessors(chain = true)*/
-public class RocketMQProperties {
+/**
+ * @author zhaishuaiqing
+ * @date 2020/10/27 9:25
+ */
+@Component
+@PropertySource(value = "classpath:config/rocketmq.properties")
+@ConfigurationProperties(prefix ="rocketmq")
+@Data
+public class RocketMQConfig {
     private String namesrvAddr;
     private String producerGroupName;
     private String transactionProducerGroupName;
@@ -38,4 +31,3 @@ public class RocketMQProperties {
     private List<String> subscribe = new ArrayList<String>();
 
 }
-
